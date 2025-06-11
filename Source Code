@@ -1,0 +1,283 @@
+#include <Arduino.h>
+#include <WiFi.h>
+#include <ESP32Servo.h>
+#include <ThingESP.h>
+
+// WiFi Credentials
+const char* ssid = "Network ";
+const char* password = "12233345444";
+
+// ThingESP Credentials
+const char* USERNAME = "jay";
+const char* PROJECT_NAME = "project name ";
+const char* CREDENTIALS = "GasDetector";
+
+const String phoneNumber = "";
+
+#define GAS_SENSOR_PIN 35
+#define SERVO_PIN 33     
+#define BUZZER_PIN 27
+#define LED_PIN 2       
+
+#define GAS_THRESHOLD 1000 
+
+ThingESP32 thing(USERNAME, PROJECT_NAME, CREDENTIALS);
+
+Servo gasServo;
+
+// Timing variables
+unsigned long lastCheckTime = 0;
+unsigned long alertTime = 0;
+unsigned long lastMessageTime = 0;
+const unsigned long MESSAGE_COOLDOWN = 60000; // 60 seconds between messages to prevent spam
+const unsigned long AUTO_SHUTOFF_TIME = 10000; 
+
+// Status tracking
+int gasStatus = 0; // 0 = Normal, 1 = Alert
+bool waitingForResponse = false;
+
+// Gas valve positions
+const int GAS_ON_POSITION = 0;
+const int GAS_OFF_POSITION = 35;
+bool valveOpen = false;  // Track valve state
+
+// Function to sound the buzzer
+void soundBuzzer() {
+  tone(BUZZER_PIN, 1000);  // Play 1kHz tone
+}
+
+// Function to stop the buzzer
+void stopBuzzer() {
+  noTone(BUZZER_PIN);  // Stop tone
+}
+
+// Function to control gas valve
+void setValvePosition(bool open) {
+  if (open) {
+    for (int i = GAS_OFF_POSITION; i >= GAS_ON_POSITION; i--) { //start from off position
+      gasServo.write(i);
+      delay(15);
+    }
+    valveOpen = true;
+    Serial.println("🔓 Gas valve ON");
+  } else {
+    for (int i = 0; i <= GAS_OFF_POSITION; i++) { //start from on position.
+      gasServo.write(i);
+      delay(15);
+    }
+    valveOpen = false;
+    Serial.println("🔒 Gas valve OFF");
+  }
+}
+
+// ThingESP callback function - must return String
+String handleResponse(String command) {
+  Serial.println("📩 Received command: " + command);
+  command.toLowerCase();  // Convert to lowercase for easier comparison
+  
+  String response = "";
+  
+  if (command == "status") {
+    int gasLevel = analogRead(GAS_SENSOR_PIN);
+    String valveStatus = valveOpen ? "ON" : "OFF";
+    String alertStatus = gasStatus ? "ALERT" : "NORMAL";
+    response = "📊 Status:\n- Gas Level: " + String(gasLevel) + 
+               "\n- Threshold: " + String(GAS_THRESHOLD) +
+               "\n- Gas Valve: " + valveStatus + 
+               "\n- Alert Status: " + alertStatus;
+  }
+  else if (command == "on" || command == "turn on") {
+    // Only allow opening if gas levels are safe
+    int gasLevel = analogRead(GAS_SENSOR_PIN);
+    if (gasLevel > GAS_THRESHOLD) {
+      response = "⚠️ Cannot turn valve ON - Gas levels too high! (" + String(gasLevel) + ")";
+    } else {
+      setValvePosition(true);
+      stopBuzzer();
+      waitingForResponse = false;
+      response = "🔥 Gas valve turned ON remotely";
+    }
+  }
+  else if (command == "off" || command == "turn off") {
+    setValvePosition(false);
+    stopBuzzer();
+    waitingForResponse = false;
+    gasStatus = 0;
+    response = "✅ Gas valve turned OFF remotely";
+  }
+  else if (command == "keep on") {
+    stopBuzzer();
+    waitingForResponse = false;
+    response = "🟢 Gas remains ON. Be careful!";
+  }
+  else if (command == "reset_alert") {
+    if (gasStatus == 1) {
+      int gasLevel = analogRead(GAS_SENSOR_PIN);
+      if (gasLevel < GAS_THRESHOLD) {
+        gasStatus = 0;
+        stopBuzzer();
+        response = "✅ Alert reset successfully";
+      } else {
+        response = "⚠️ Cannot reset - Gas levels still high! (" + String(gasLevel) + ")";
+      }
+    } else {
+      response = "✅ No active alerts to reset";
+    }
+  }
+  else if (command == "help") {
+    response = "📚 Available commands:\n"
+               "- on/turn on: Turn gas valve ON\n"
+               "- off/turn off: Turn gas valve OFF\n"
+               "- status: Get current readings\n"
+               "- reset_alert: Reset alarm\n"
+               "- help: Show this help message";
+  }
+  else {
+    response = "❓ Unknown command. Type 'help' for available commands.";
+  }
+  
+  return response;
+}
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("🔄 Starting Advanced Gas Detector System");
+
+  // Initialize hardware
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+
+  // Attach and set servo
+  gasServo.attach(SERVO_PIN);
+  // 
+  // setValvePosition(false); // Start with gas valve closed for safety
+// 
+  // Connect to WiFi and ThingESP
+  Serial.println("🔄 Connecting to WiFi...");
+  WiFi.begin(ssid, password);
+  
+  // Wait for WiFi connection
+  int wifiAttempts = 0;
+  while (WiFi.status() != WL_CONNECTED && wifiAttempts < 20) {
+    delay(500);
+    Serial.print(".");
+    wifiAttempts++;
+  }
+  
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("");
+    Serial.print("✅ WiFi connected. IP: ");
+    Serial.println(WiFi.localIP());
+  } else {
+    Serial.println("");
+    Serial.println("❌ WiFi connection failed. Operating in offline mode.");
+  }
+  
+  // Add a delay before ThingESP connection
+  delay(2000);
+
+  // Set ThingESP WiFi credentials and callback
+  thing.SetWiFi(ssid, password);
+  thing.setCallback(handleResponse);
+
+  // Initialize ThingESP connection
+  Serial.println("🔄 Connecting to ThingESP...");
+  thing.initDevice();
+  Serial.println("✅ Connected!");
+
+  // Send initialization message
+  thing.sendMsg(phoneNumber, "🔄 Gas detection system online! Send 'on' to turn on gas, 'off' to turn it off, or 'status' for current readings.");
+  lastMessageTime = millis();
+
+  digitalWrite(LED_PIN, HIGH);  // Turn on built-in LED to indicate system is ready
+  Serial.println("✅ Setup complete!");
+}
+
+void loop() {
+  // Handle ThingESP communications
+  thing.Handle();
+
+  // Read gas sensor
+  int gasLevel = analogRead(GAS_SENSOR_PIN);
+
+  // Log gas level periodically (every 5 seconds)
+  unsigned long currentTime = millis();
+  if (currentTime - lastCheckTime > 5000) {
+    Serial.println("📊 Gas Level: " + String(gasLevel));
+    lastCheckTime = currentTime;
+  }
+
+  // Check valve position
+  bool isValveOpen = (gasServo.read() == GAS_ON_POSITION);
+
+  // --- SAFETY LOGIC ---
+  
+  // Case 1: Gas is ON and leak detected
+  if (isValveOpen && gasLevel > GAS_THRESHOLD && !waitingForResponse) {
+    soundBuzzer();
+    digitalWrite(LED_PIN, (millis() / 500) % 2); // Blink LED
+    
+    // Send alert message with cooldown check
+    if (currentTime - lastMessageTime > MESSAGE_COOLDOWN) {
+      thing.sendMsg(phoneNumber, "⚠️ *DANGEROUS GAS LEAK DETECTED while gas is ON!* Current level: " + String(gasLevel) + 
+                    "\nReply 'Turn off' or 'Keep on'. Auto turn-off in 1 min.");
+      lastMessageTime = currentTime;
+      Serial.println("📩 Alert message sent");
+    }
+    
+    alertTime = millis();
+    waitingForResponse = true;
+    gasStatus = 1;
+  }
+  
+  // Case 2: Gas is OFF but leak detected (external leak)
+  if (!isValveOpen && gasLevel > GAS_THRESHOLD && !waitingForResponse && gasStatus == 0) {
+    soundBuzzer();
+    digitalWrite(LED_PIN, (millis() / 500) % 2); // Blink LED
+    gasStatus = 1;
+    
+    // Send alert message with cooldown check
+    if (currentTime - lastMessageTime > MESSAGE_COOLDOWN) {
+      thing.sendMsg(phoneNumber, "⚠️ *Gas leak detected even though the valve is OFF!* Possible external leak. Current level: " + String(gasLevel));
+      lastMessageTime = currentTime;
+      Serial.println("📩 Alert message sent for external leak");
+    }
+  }
+  
+  // Auto turn-off after 10 seconds if leak detected
+  if (gasStatus == 1 && isValveOpen && (currentTime - alertTime > AUTO_SHUTOFF_TIME)) {
+   setValvePosition(false);
+   valveOpen = false;
+   stopBuzzer();
+   digitalWrite(LED_PIN, HIGH); // Solid LED
+   thing.sendMsg(phoneNumber, "⏳ Gas valve automatically turned OFF after leak alert.");
+   lastMessageTime = currentTime;
+   gasStatus = 0;
+  }
+  
+  // Case 4: Gas levels return to normal
+  if (gasLevel < (GAS_THRESHOLD - 200) && gasStatus == 1 && (currentTime - alertTime > 30000) && !waitingForResponse) {
+    // Gas levels returned to normal (with hysteresis and 30-second minimum alert time)
+    gasStatus = 0;
+    
+    // Turn off alarm
+    stopBuzzer();
+    digitalWrite(LED_PIN, HIGH); // Steady LED in normal state
+    
+    // Send all-clear message (with rate limiting)
+    if (currentTime - lastMessageTime > MESSAGE_COOLDOWN) {
+      thing.sendMsg(phoneNumber, "✅ Gas levels have returned to normal. Valve status: " + String(isValveOpen ? "ON" : "OFF"));
+      lastMessageTime = currentTime;
+      Serial.println("📩 All-clear message sent");
+    }
+    
+    Serial.println("✅ Gas levels returned to normal.");
+  }
+  
+  // LED status indication
+  if (gasStatus == 0) {
+    digitalWrite(LED_PIN, HIGH); // Steady on in normal state
+  }
+  
+  delay(100); // Short delay for stability
+}
