@@ -102,18 +102,17 @@ commercial environments.
 Key Benefits: 
 ****************************************************************************************************************
 • 🛡️ Enhanced Safety: Provides early gas leak detection and automatic 
-emergency response, reducing the risk of fire or explosion. 
+emergency response, reducing the risk of fire or explosion. <br>
 • 📱 Remote Monitoring: Allows users to check gas levels and control the gas 
-valve from their phone, even when away from home. 
+valve from their phone, even when away from home. <br>
 • 💰 Cost-Effective Solution: Built with affordable components, making it 
-suitable for wide adoption in residential and small-scale industries. 
-• ⚙️ 
-Automation & Intelligence: Minimizes human intervention, reducing error 
-and increasing reliability during emergencies. 
+suitable for wide adoption in residential and small-scale industries. <br>
+• ⚙️ Automation & Intelligence: Minimizes human intervention, reducing error 
+and increasing reliability during emergencies. <br>
 • 🌐 Smart Home Integration: Adds to the ecosystem of smart home devices, 
-contributing to a safer, connected living space. 
+contributing to a safer, connected living space.<br> 
 • 👨‍💻 Learning Outcome: Gave the team hands-on experience with embedded 
-systems, IoT platforms, and cloud-based communication.
+systems, IoT platforms, and cloud-based communication.<br>
 
 ****************************************************************************************************************
 REFERENCES 
