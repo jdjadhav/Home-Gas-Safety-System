@@ -1,4 +1,4 @@
-# Home-Gas-Safety-System
+<h1 align="center">Home-Gas-Safety-System</h1>
 ****************************************************************************************************************
 • Automatically detects gas leaks and shuts off the gas supply.  • Sends real-time WhatsApp alerts via ThingESP.  • Provides remote monitoring and control through IoT commands.  • Enhances campus safety and resource efficiency
 ****************************************************************************************************************
