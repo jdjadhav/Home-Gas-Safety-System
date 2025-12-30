@@ -20,6 +20,8 @@ LED Indicates system status (normal or alert)
  Breadboard, Wires For circuit connections and prototyping 
 Power Supply Provides necessary voltage to run the system components 
 
+![IMG_8647](https://github.com/user-attachments/assets/5f1ceb29-3266-4513-94c9-51d0efb6764f)
+
 ****************************************************************************************************************
 Software Used: 
 ****************************************************************************************************************
