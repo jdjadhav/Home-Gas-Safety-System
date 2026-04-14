@@ -6,6 +6,14 @@ An IoT-based smart safety system that detects gas leaks, prevents hazards, and a
 
 ---
 
+## 🏆 Achievement
+
+🥇 **1st Prize Winner – IoT Exhibition**  
+📍 GHRCEMP (GH Raisoni College of Engineering and Management, Wagholi)  
+👨‍⚖️ Judged by faculty from **NIT Nagpur** and **IIT Goa**
+
+---
+
 ## 🚀 Features
 
 - 🚨 Automatically detects gas leaks and shuts off the gas supply  
@@ -127,8 +135,9 @@ The system continuously monitors air using an MQ-series gas sensor connected to 
 ## 👨‍💻 Contributors
 
 - Satish Choudhary
-- Jay Jadhav
-- Vaibhav Tembukade
+- Jay Jadhav (https://github.com/jdjadhav)
+- Vaibhav Tembukade (https://github.com/Vaibhav9T)
+- Rahul Yadav
 
 ---
 
