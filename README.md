@@ -49,7 +49,7 @@ An IoT-based smart safety system that detects gas leaks, prevents hazards, and a
 
 ---
 
-### 🖼️ Project Image
+### 🖼️ The winning moment
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/5f1ceb29-3266-4513-94c9-51d0efb6764f" width="400"/>
