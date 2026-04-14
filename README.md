@@ -14,6 +14,16 @@ An IoT-based smart safety system that detects gas leaks, prevents hazards, and a
 
 ---
 
+## 🎥 Project Demo & Presentation
+
+🔗 **Working Project Video**  
+👉 https://drive.google.com/file/d/1gSTMltTgJrV9vck2xbrGrBWB1pPRgJzX/view?usp=sharing  
+
+📊 **Project Presentation (PPT)**  
+👉 https://docs.google.com/presentation/d/16K0k8Ys5x3OdZA3Cj57oqfRAvYdbZs5D/edit?usp=sharing&ouid=111146649149576739574&rtpof=true&sd=true  
+
+---
+
 ## 🚀 Features
 
 - 🚨 Automatically detects gas leaks and shuts off the gas supply  
@@ -138,7 +148,6 @@ The system continuously monitors air using an MQ-series gas sensor connected to 
 - Jay Jadhav (https://github.com/jdjadhav)
 - Vaibhav Tembukade (https://github.com/Vaibhav9T)
 - Rahul Yadav
-
 ---
 
 ## ⭐ Support
