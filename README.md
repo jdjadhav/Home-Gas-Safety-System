@@ -1,135 +1,137 @@
-<h1 align="center">Home-Gas-Safety-System</h1>
-***
-• Automatically detects gas leaks and shuts off the gas supply.  • Sends real-time WhatsApp alerts via ThingESP.  • Provides remote monitoring and control through IoT commands.  • Enhances campus safety and resource efficiency
-***
-IOT TECHNOLOGY
-***
-Hardware Used: 
-The following components are used in the model: 
-Component Purpose 
-ESP32 
-Microcontroller 
-Main controller that processes sensor data and manages 
-system operations 
-MQ6 Gas Sensor Detects gas levels in the environment  (e.g., LPG, 
-methane) 
-Servo Motor Controls the gas valve 
-(opens/closes it based on gas detection) 
-Buzzer Sounds a loud alarm when gas is detected 
-LED Indicates system status (normal or alert) 
- Breadboard, Wires For circuit connections and prototyping 
-Power Supply Provides necessary voltage to run the system components 
+<h1 align="center">🔥 Home Gas Safety System</h1>
 
-![IMG_8647](https://github.com/user-attachments/assets/5f1ceb29-3266-4513-94c9-51d0efb6764f)
+<p align="center">
+An IoT-based smart safety system that detects gas leaks, prevents hazards, and alerts users in real-time.
+</p>
 
-****************************************************************************************************************
-Software Used: 
-****************************************************************************************************************
-To program and operate the system, the following software tools are used: 
-Software Purpose 
-Arduino IDE 
- 
-.Platform used for coding and uploading programs to  
-the ESP32 
- 
-.WiFi.h 
- 
-.Handles wireless connectivity between ESP32 and  
-router 
- 
-.ESP32Servo.h 
- 
-.Controls the servo motor with precision 
- 
-.ThingESP.h 
- 
-.Enables WhatsApp communication and remote control  
-via ThingESP cloud 
- 
-.Arduino.h 
- 
-.Core Arduino functions and syntax support 
- 
-.Serial Monitor 
- 
-.Real-time monitoring and debugging tool in the  
-Arduino IDE 
- 
-.Twilio Twilio is a cloud communications platform that enables 
-developers to build communication features like voice, 
-text, chat, video, and email into their applications using 
-APIs. Whatapp API integration for messaging. 
-Whatsapp It used for communication with the user. The Arduino 
-IDE is used for coding and uploading the firmware, 
-while Twilio is used for real-time communication with 
-the mobile app (Whatsapp)
-****************************************************************************************************************
-METHODOLOGY 
-****************************************************************************************************************
-Our system works by continuously monitoring the surrounding air for gas leaks using 
-an MQ-series gas sensor. The sensor is connected to an ESP32 microcontroller, 
-which reads the gas concentration levels in real time. If the gas level crosses a 
-predefined safety threshold, the ESP32 triggers a series of automatic actions. 
-First, the system activates a buzzer to provide an immediate audio alert to people 
-nearby. At the same time, it sends an emergency WhatsApp message to a predefined 
-phone number using the ThingESP platform. This ensures that the user is notified 
-instantly, even if they are not physically present. 
-To prevent further danger, the ESP32 also controls a servo motor that automatically 
-turns off the gas valve. The system is designed with a safety-first approach — it will 
-not allow the valve to open again until gas levels return to normal. 
-Users can also interact with the system remotely using simple WhatsApp commands 
-like "on", "off", "status", and "reset_alert". This remote control functionality allows 
-users to check the status of the system and operate it safely from anywhere. 
-The entire project is programmed and tested using the Arduino IDE. We used WiFi 
-connectivity for seamless mobile integration, and implemented rate-limiting in the 
-alert system to avoid message spamming. This makes the solution efficient, 
-responsive, and user-friendly.
-****************************************************************************************************************
-OUTCOMES AND BENEFITS 
-****************************************************************************************************************
-Project Outcomes: 
-• A functional Home Gas Safety System was successfully designed and 
-implemented using ESP32, gas sensor, and servo motor. 
-• The system can detect gas leaks in real-time and automatically shut off the 
-gas valve to prevent hazards. 
-• Integrated mobile notifications via WhatsApp using the ThingESP platform, 
-enhancing user awareness and remote control. 
-• Developed a working prototype capable of sound alerts, remote valve 
-operation, and status monitoring. 
-• Demonstrated the potential of IoT-based safety systems in household and 
-commercial environments.
-****************************************************************************************************************
-Key Benefits: 
-****************************************************************************************************************
-🛡️ Enhanced Safety: Provides early gas leak detection and automatic 
-emergency response, reducing the risk of fire or explosion. <br>
-📱 Remote Monitoring: Allows users to check gas levels and control the gas 
-valve from their phone, even when away from home. <br>
-💰 Cost-Effective Solution: Built with affordable components, making it 
-suitable for wide adoption in residential and small-scale industries. <br>
-⚙️ Automation & Intelligence: Minimizes human intervention, reducing error 
-and increasing reliability during emergencies. <br>
-🌐 Smart Home Integration: Adds to the ecosystem of smart home devices, 
-contributing to a safer, connected living space.<br> 
-👨‍💻 Learning Outcome: Gave the team hands-on experience with embedded 
-systems, IoT platforms, and cloud-based communication.<br>
+---
 
-****************************************************************************************************************
-REFERENCES 
-****************************************************************************************************************
-1. Espressif Systems – ESP32 Technical Reference Manual Link: 
-https://www.espressif.com/en/products/socs/esp32  
-2. ThingESP Documentation – IoT Platform for ESP32 Integration 
-Link: https://thingesp.com  
-3. SparkFun Electronics – MQ Series Gas Sensor Datasheet (e.g., 
-MQ-2) Link: 
-https://www.sparkfun.com/datasheets/Sensors/Biometric/MQ
-2.pdf  
-4. Arduino – Official Programming Reference and Libraries Link: 
-https://www.arduino.cc/reference/en  
-5. Random Nerd Tutorials – ESP32 Wi-Fi Communication and IoT 
-Projects Link: https://randomnerdtutorials.com/esp32-wi-fi  
-6. Embedded Systems Journal (2023 Edition) – Buzzer and LED 
-Indicators in Safety Systems 
-7. Twilio – WhatsApp Messaging API for IoT Alerts Link: 
-https://www.twilio.com/whatsap
+## 🚀 Features
+
+- 🚨 Automatically detects gas leaks and shuts off the gas supply  
+- 📲 Sends real-time WhatsApp alerts via ThingESP  
+- 🌐 Enables remote monitoring and control using IoT commands  
+- 🏫 Improves safety and resource efficiency  
+
+---
+
+## 🧠 Technology Used
+
+### 🔧 Hardware Components
+
+| Component        | Purpose |
+|-----------------|--------|
+| **ESP32**       | Main microcontroller that processes sensor data and controls the system |
+| **MQ6 Gas Sensor** | Detects gas levels (LPG, methane, etc.) |
+| **Servo Motor** | Controls gas valve (open/close) |
+| **Buzzer**      | Alerts with sound during gas leak |
+| **LED**         | Indicates system status |
+| **Breadboard & Wires** | Circuit connections |
+| **Power Supply** | Powers the system |
+
+---
+
+### 🖼️ Project Image
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5f1ceb29-3266-4513-94c9-51d0efb6764f" width="400"/>
+</p>
+
+---
+
+## 💻 Software & Tools
+
+| Software / Library | Purpose |
+|-------------------|--------|
+| **Arduino IDE**   | Coding and uploading to ESP32 |
+| **WiFi.h**        | Handles Wi-Fi connectivity |
+| **ESP32Servo.h**  | Controls servo motor |
+| **ThingESP.h**    | Enables WhatsApp communication |
+| **Arduino.h**     | Core Arduino functions |
+| **Serial Monitor**| Debugging tool |
+| **Twilio API**    | WhatsApp messaging integration |
+| **WhatsApp**      | User communication interface |
+
+---
+
+## ⚙️ Methodology
+
+The system continuously monitors air using an MQ-series gas sensor connected to an ESP32.
+
+### 🔄 Working Process:
+
+1. 📡 Sensor detects gas concentration in real time  
+2. ⚠️ If threshold exceeds:
+   - 🔊 Buzzer activates  
+   - 📲 WhatsApp alert is sent  
+   - 🔒 Gas valve is automatically shut off  
+3. 🧠 System prevents valve reopening until safe levels return  
+4. 📱 Users can control system via WhatsApp commands:
+   - `on`
+   - `off`
+   - `status`
+   - `reset_alert`
+
+✔️ Built with safety-first approach  
+✔️ Includes rate-limiting to prevent message spam  
+✔️ Fully programmed using Arduino IDE  
+
+---
+
+## 📊 Outcomes
+
+- ✅ Successfully developed a working gas safety system  
+- 🔍 Real-time gas leak detection implemented  
+- 🔒 Automatic gas valve shutoff mechanism  
+- 📲 WhatsApp-based alert system integrated  
+- 🌐 Remote monitoring and control enabled  
+- 🧪 Functional prototype demonstrated  
+
+---
+
+## 🎯 Key Benefits
+
+- 🛡️ **Enhanced Safety** – Early detection prevents accidents  
+- 📱 **Remote Monitoring** – Control system from anywhere  
+- 💰 **Cost-Effective** – Affordable and scalable solution  
+- ⚙️ **Automation** – Reduces human error  
+- 🌐 **Smart Integration** – Fits into smart home ecosystem  
+- 👨‍💻 **Learning Experience** – Hands-on IoT & embedded systems  
+
+---
+
+## 📚 References
+
+1. ESP32 Documentation  
+   👉 https://www.espressif.com/en/products/socs/esp32  
+
+2. ThingESP Platform  
+   👉 https://thingesp.com  
+
+3. MQ Gas Sensor Datasheet  
+   👉 https://www.sparkfun.com/datasheets/Sensors/Biometric/MQ2.pdf  
+
+4. Arduino Documentation  
+   👉 https://www.arduino.cc/reference/en  
+
+5. ESP32 IoT Tutorials  
+   👉 https://randomnerdtutorials.com/esp32-wi-fi  
+
+6. Embedded Systems Journal (2023)  
+
+7. Twilio WhatsApp API  
+   👉 https://www.twilio.com/whatsapp  
+
+---
+
+## 👨‍💻 Contributors
+
+- Satish Choudhary
+- Jay Jadhav
+- Vaibhav Tembukade
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub!
